@@ -1,0 +1,14 @@
+{
+  "name": "civic-issue-system-root",
+  "version": "1.0.0",
+  "description": "Root workspace to start all Civic Issue Microservices simultaneously",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:admin\" \"npm run start:mobile\"",
+    "start:backend": "cd backend && npm start",
+    "start:admin": "cd web-admin && npm run dev",
+    "start:mobile": "cd mobile-app && npx expo start -c"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
