@@ -11,6 +11,7 @@ export const createIssue = async (req, res) => {
     const { title, description, category, longitude, latitude, address, forceSubmit, imageBase64 } = req.body;
     
     let imageUrl = null;
+    if (imageBase64) {
         console.log("Processing base64 image upload...");
         
         // Ensure proper data URI prefix
@@ -24,7 +25,7 @@ export const createIssue = async (req, res) => {
            resource_type: 'image'
         });
         imageUrl = uploadRes.secure_url;
-     }
+    }
 
     const lat = parseFloat(latitude) || 0;
     const lon = parseFloat(longitude) || 0;
