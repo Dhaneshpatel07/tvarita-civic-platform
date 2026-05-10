@@ -66,6 +66,11 @@ export default function ReportIssueScreen({ navigation }) {
       return;
     }
 
+    if (!title || !description) {
+      Alert.alert('Missing Info', 'Please provide both a title and a description for the report.');
+      return;
+    }
+
     if (!coordinates) {
       Alert.alert('Missing Location', 'Please attach precise GPS location first.');
       return;

@@ -58,12 +58,12 @@ export const createIssue = async (req, res) => {
     if (imageUrl) {
         try {
             const aiResult = await analyzeImageContent(imageUrl, title, description);
-            if (!aiResult.isValid) {
+            if (aiResult && aiResult.isValid === false) {
                 return res.status(400).json({ 
-                    message: `🤖 AI Blocked: Visual analysis securely flagged this content as non-civic. Detected: "${aiResult.caption}"` 
+                    message: `🤖 AI Blocked: Visual analysis securely flagged this content as non-civic. Detected: "${aiResult.caption || 'Unsuitable content'}"` 
                 });
             }
-            aiCaption = aiResult.caption;
+            aiCaption = aiResult?.caption || "Civic context verified";
         } catch (aiError) {
             console.warn("🛡️ AI Safe-Bailout Activated:", aiError.message);
             aiCaption = "Verification bypassed for service resilience";

@@ -1,7 +1,8 @@
 // Haversine distance formula util (Calculates physical meters between two GPS coordinates)
 export const getDistanceInMeters = (lat1, lon1, lat2, lon2) => {
-  const R = 6371e3; // Earth radius in meters
-  const rad = (deg) => deg * (Math.PI / 180);
+  if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity; // Safety: Missing GPS shouldn't crash the server
+  const R = 6371e3; 
+  const rad = (deg) => (deg * Math.PI) / 180;
   const dLat = rad(lat2 - lat1);
   const dLon = rad(lon2 - lon1);
   const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -10,16 +11,15 @@ export const getDistanceInMeters = (lat1, lon1, lat2, lon2) => {
 };
 
 // Algorithmic Priority Scoring System
-export const calculatePriority = (category, upvotesCount) => {
+export const calculatePriority = (category, upvotesCount = 0) => {
   const categoryWeights = {
-    'Waste Management': 30, // Health/Bio-hazard
-    'Water Leak': 40,       // Infrastructure loss
-    'Pothole': 20,          // General infrastructure
-    'Streetlight': 15,      // Community safety
+    'Waste Management': 30,
+    'Water Leak': 40,
+    'Pothole': 20,
+    'Streetlight': 15,
     'Other': 10
   };
-  const baseScore = categoryWeights[category] || 10;
-  // Deep-impact crowd surge calculation (+15 points physically verified)
+  const baseScore = categoryWeights[category || 'Other'] || 10;
   const totalScore = baseScore + (upvotesCount * 15);
 
   if (totalScore >= 80) return 'Critical';
