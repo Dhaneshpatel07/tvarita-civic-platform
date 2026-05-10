@@ -16,7 +16,7 @@ export default function MyReportsScreen() {
       setIssues(data);
     } catch (err) {
       console.warn("Fetch Error:", err.message);
-      Alert.alert('Sync Error', 'Could not retrieve your reporting history from the cloud.');
+      Alert.alert('Sync Error', 'Could not retrieve your reporting history.');
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export default function MyReportsScreen() {
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#4F46E5" />
-          <Text style={{ marginTop: 10, color: '#6B7280' }}>Fetching your records...</Text>
+          <Text style={{ marginTop: 10, color: '#6B7280' }}>Fetching records...</Text>
         </View>
       ) : (
         <FlatList
@@ -63,9 +63,9 @@ export default function MyReportsScreen() {
           refreshing={loading}
           ListEmptyComponent={
             <View style={{ alignItems: 'center', marginTop: 40 }}>
-              <Text style={{ fontSize: 40, marginBottom: 10 }}>📂</Text>
+              <Text style={{ fontSize: 40, marginBottom: 10 }}>[Empty]</Text>
               <Text style={{ textAlign: 'center', fontWeight: '800', fontSize: 16, color: '#374151' }}>No Records Found</Text>
-              <Text style={{ textAlign: 'center', color: '#6B7280', marginTop: 8 }}>Your successfully submitted reports will appear here in chronological order.</Text>
+              <Text style={{ textAlign: 'center', color: '#6B7280', marginTop: 8 }}>Your reports will appear here once submitted.</Text>
             </View>
           }
         />

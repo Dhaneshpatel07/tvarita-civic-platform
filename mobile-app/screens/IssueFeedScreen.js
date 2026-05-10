@@ -5,18 +5,19 @@ import * as Location from 'expo-location';
 import * as Haptics from 'expo-haptics';
 import { Animated } from 'react-native';
 import api from '../services/api';
-import logo from '../assets/tvarita-logo.png';
+
+// Using require for assets is safer for bundling compatibility
+const logo = require('../assets/tvarita-logo.png');
 
 export default function IssueFeedScreen() {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locatingId, setLocatingId] = useState(null);
-  const [viewMode, setViewMode] = useState('100m'); // Forced Hyper-Local mode
+  const [viewMode, setViewMode] = useState('100m'); 
 
   const fetchIssues = async (mode = viewMode) => {
     setLoading(true);
     setViewMode(mode);
-    // Location Search
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -37,7 +38,6 @@ export default function IssueFeedScreen() {
     }
   };
 
-  // Run every time the tab comes into foreground focus!
   useFocusEffect(
     useCallback(() => {
       fetchIssues(viewMode);
@@ -84,7 +84,7 @@ export default function IssueFeedScreen() {
            <Text style={styles.badgeText}>{item.status}</Text>
         </View>
       </View>
-      <Text style={styles.subtitle}>{item.category || 'Other'} • Priority: <Text style={{fontWeight: 'bold', color: item.priority === 'Critical' ? 'red' : 'gray'}}>{item.priority || 'Low'}</Text></Text>
+      <Text style={styles.subtitle}>{item.category || 'Other'} - Priority: <Text style={{fontWeight: 'bold', color: item.priority === 'Critical' ? 'red' : 'gray'}}>{item.priority || 'Low'}</Text></Text>
 
       <TouchableOpacity 
          style={[styles.upvoteButton, locatingId === item._id && {backgroundColor: '#D1D5DB'}]} 
@@ -92,22 +92,21 @@ export default function IssueFeedScreen() {
          disabled={locatingId === item._id}
       >
         {locatingId === item._id ? (
-          <Text style={styles.upvoteText}>📍 Triangulating Hardware GPS...</Text>
+          <Text style={styles.upvoteText}>ðŸ“ Triangulating Hardware GPS...</Text>
         ) : (
-          <Text style={styles.upvoteText}>👍 Verify & Upvote (+15pts) • {item.upvotes?.length || 0}</Text>
+          <Text style={styles.upvoteText}>ðŸ‘ Verify & Upvote (+15pts) â€¢ {item.upvotes?.length || 0}</Text>
         )}
       </TouchableOpacity>
     </View>
+    </AnimatedCard>
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.brandingHeader}>
          <Image source={logo} style={styles.mobileLogo} />
-         <Text style={styles.mobileTagline}>त्वरितं समाधानम् • पारदर्शकता</Text>
+         <Text style={styles.mobileTagline}>à¤¤à¥à¤µà¤°à¤¿à¤¤à¤‚ à¤¸à¤®à¤¾à¤§à¤¾à¤¨à¤®à¥ â€¢ à¤ªà¤¾à¤°à¤¦à¤°à¥à¤¶à¤•à¤¤à¤¾</Text>
       </View>
-
-      {/* Toggle Header Removed to Enforce Hyper-Local 30m Feed */}
 
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -124,7 +123,7 @@ export default function IssueFeedScreen() {
           refreshing={loading}
           ListEmptyComponent={
              <View style={{alignItems: 'center', marginTop: 40, paddingHorizontal: 20}}>
-               <Text style={{fontSize: 50, marginBottom: 10}}>📍</Text>
+               <Text style={{fontSize: 50, marginBottom: 10}}>[Map]</Text>
                <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 16, color: '#374151'}}>No civic logs within 100 meters.</Text>
                <Text style={{textAlign: 'center', color: '#6B7280', marginTop: 8}}>You are currently in Restricted Privacy Mode (Local Only).</Text>
                <TouchableOpacity 

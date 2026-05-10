@@ -6,8 +6,6 @@ import * as Haptics from 'expo-haptics';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
-// We are using OpenStreetMap's free Nominatim API for reverse geocoding!
-
 export default function ReportIssueScreen({ navigation }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -25,17 +23,15 @@ export default function ReportIssueScreen({ navigation }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.6,
-      base64: true, // Crucial for reliable JSON upload
+      base64: true, 
     });
 
     if (!result.canceled) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      // Save the raw base64 string instead of just the URI
       setImageUri(result.assets[0].base64);
     }
   };
 
-  // Grab GPS coordinates and Reverse-Geocode via Google Maps API
   const fetchLocation = async () => {
     setIsLocating(true);
     try {
@@ -48,7 +44,6 @@ export default function ReportIssueScreen({ navigation }) {
 
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       setIsLocating(true);
-      // Get precise GPS coordinates with an 8-second hardware timeout to prevent infinite indoor hanging
       let locationObj = await Promise.race([
         Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }),
         new Promise((_, reject) => setTimeout(() => reject(new Error("GPS signal timeout. Please try outside.")), 8000))
@@ -57,7 +52,6 @@ export default function ReportIssueScreen({ navigation }) {
       setCoordinates({ latitude, longitude });
 
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      // 🛡️ DEMO GOD MODE: Instantly stamp raw coordinates to prevent Nominatim API freezing
       setLocationAddress(`GPS: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
     } catch (error) {
       Alert.alert('Error fetching location', error.message);
@@ -73,12 +67,12 @@ export default function ReportIssueScreen({ navigation }) {
     }
 
     if (!coordinates) {
-      Alert.alert('Missing Location', 'Please tap "Attach Precise GPS Location" first. Your current coordinates are required for verification.');
+      Alert.alert('Missing Location', 'Please attach precise GPS location first.');
       return;
     }
 
     if (!imageUri) {
-      Alert.alert('Missing Image', 'Please attach a photo of the civic issue.');
+      Alert.alert('Missing Image', 'Please attach a photo of the issue.');
       return;
     }
     
@@ -95,8 +89,6 @@ export default function ReportIssueScreen({ navigation }) {
         imageBase64: imageUri
       };
 
-      console.log("🛠️ Submitting pure JSON to Tvarita safely via native Fetch...");
-      
       const fetchResponse = await fetch(`${api.defaults.baseURL}/issues`, {
         method: 'POST',
         headers: {
@@ -111,20 +103,17 @@ export default function ReportIssueScreen({ navigation }) {
       try {
         responseData = await fetchResponse.json();
       } catch (parseError) {
-        throw new Error("Server returned an invalid or corrupted response (possible network drop).");
+        throw new Error("Server returned an invalid response.");
       }
 
       if (!fetchResponse.ok) {
-        // Handle specific server-side errors
         const error = new Error(responseData.message || `Server Error (${fetchResponse.status})`);
         error.response = { status: fetchResponse.status, data: responseData };
-        
-        console.error("❌ Submission Failed:", error.message, responseData);
         throw error;
       }
       
       const aiVerdict = responseData.aiCaption || "Verified by AI";
-      Alert.alert('Report Saved!', `AI Detection: "${aiVerdict}"\nYour report is now live and tracked!`);
+      Alert.alert('Report Saved!', `AI Detection: "${aiVerdict}"\nYour report is now live!`);
       
       setTitle('');
       setDescription('');
@@ -148,10 +137,10 @@ export default function ReportIssueScreen({ navigation }) {
                      latitude: coordinates.latitude, 
                      longitude: coordinates.longitude 
                    });
-                   Alert.alert('Success', 'You organically upvoted the existing issue instead!');
+                   Alert.alert('Success', 'Upvoted the existing issue instead!');
                    navigation.navigate('Feed');
                  } catch (upvoteError) {
-                   Alert.alert('Validation Error', upvoteError.response?.data?.message || 'Upvote failed. Stay within 30m.');
+                   Alert.alert('Validation Error', upvoteError.response?.data?.message || 'Upvote failed.');
                  }
                }
             },
@@ -205,23 +194,21 @@ export default function ReportIssueScreen({ navigation }) {
           ))}
         </ScrollView>
 
-        {/* --- Image Selection UI --- */}
         <TouchableOpacity style={styles.actionArea} onPress={pickImage}>
           {imageUri ? (
             <Image source={{ uri: `data:image/jpeg;base64,${imageUri}` }} style={styles.previewImage} />
           ) : (
-            <Text style={styles.actionText}>📷 Tap to Attach Photo</Text>
+            <Text style={styles.actionText}>ðŸ“· Tap to Attach Photo</Text>
           )}
         </TouchableOpacity>
 
-        {/* --- Geographic Location UI --- */}
         <TouchableOpacity style={[styles.actionArea, { marginTop: 0 }]} onPress={fetchLocation}>
           {isLocating ? (
-             <Text style={styles.actionText}>📍 Finding location...</Text>
+             <Text style={styles.actionText}>ðŸ“ Finding location...</Text>
           ) : locationAddress ? (
-            <Text style={[styles.actionText, {color: '#4F46E5', fontWeight: 'bold'}]}>✅ {locationAddress}</Text>
+            <Text style={[styles.actionText, {color: '#4F46E5', fontWeight: 'bold'}]}>âœ… {locationAddress}</Text>
           ) : (
-            <Text style={styles.actionText}>📍 Tap to Attach Precise GPS Location</Text>
+            <Text style={styles.actionText}>ðŸ“ Tap to Attach Precise GPS Location</Text>
           )}
         </TouchableOpacity>
 
