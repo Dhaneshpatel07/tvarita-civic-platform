@@ -5,10 +5,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Final direct-link configuration for guaranteed signature matching
 cloudinary.config({
-  cloud_name: (process.env.CLOUDINARY_CLOUD_NAME || '').trim(),
-  api_key: (process.env.CLOUDINARY_API_KEY || '').trim(),
-  api_secret: (process.env.CLOUDINARY_API_SECRET || '').trim(),
+  cloud_name: 'dtqz9npgu',
+  api_key: '832232444623993',
+  api_secret: 'cwv--HCc5rNb-6d_iAN6C0E4NTI'
 });
 
 const storage = new CloudinaryStorage({
