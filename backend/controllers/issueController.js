@@ -39,7 +39,7 @@ export const createIssue = async (req, res) => {
         location: {
            $near: {
              $geometry: { type: 'Point', coordinates: [lon, lat] },
-             $maxDistance: 20 
+             $maxDistance: 50 
            }
         }
       });

@@ -36,8 +36,8 @@ export default function MyReportsScreen() {
            <Text style={styles.badgeText}>{item.status}</Text>
         </View>
       </View>
-      <Text style={styles.subtitle}>Reported on: {new Date(item.createdAt).toLocaleDateString()}</Text>
-      <Text style={{fontSize: 12, color: '#9CA3AF', paddingHorizontal: 20, paddingBottom: 15}}>Reference ID: {item._id.substring(0, 8)}...</Text>
+      <Text style={styles.subtitle}>Reported on: {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Pending...'}</Text>
+      <Text style={{fontSize: 12, color: '#9CA3AF', paddingHorizontal: 20, paddingBottom: 15}}>Reference ID: {item._id ? item._id.substring(0, 8) : '...'}...</Text>
     </View>
   );
 

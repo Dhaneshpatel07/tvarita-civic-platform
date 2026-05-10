@@ -119,7 +119,7 @@ const IssueList = ({ issues = [], updateStatus }) => {
                   {issue.status}
                 </span>
               </td>
-              <td>{new Date(issue.createdAt).toLocaleDateString()}</td>
+              <td>{issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : 'Syncing...'}</td>
               <td>
                 <select 
                   className="action-select"
