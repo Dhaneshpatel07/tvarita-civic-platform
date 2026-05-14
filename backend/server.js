@@ -42,18 +42,22 @@ const connectDB = async () => {
     await mongoose.model('Issue').createIndexes();
     console.log('🌍 Geospatial 2dsphere Index Verified');
 
-    // Automatically seed a Master Administrator account to allow Web Dashboard access
+    // Automatically seed Master Accounts for demonstration
     const User = mongoose.model('User');
-    const adminExists = await User.findOne({ email: 'admin@tvarita.com' });
     
-    if (!adminExists) {
-        await User.create({
-           name: 'Tvarita Administrator',
-           email: 'admin@tvarita.com',
-           password: 'dhanesh',
-           role: 'admin'
-        });
-        console.log('🛡️ Master Admin Node Seeded: admin@tvarita.com');
+    const seedUsers = [
+        { name: 'Tvarita Administrator', email: 'admin@tvarita.com', password: 'dhanesh', role: 'admin' },
+        { name: 'Dhanesh', email: 'dhanesh@gmail.com', password: 'password123', role: 'citizen' },
+        { name: 'Hasini', email: 'hasini@gmail.com', password: 'password123', role: 'citizen' },
+        { name: 'Siril', email: 'siril@gmail.com', password: 'password123', role: 'citizen' }
+    ];
+
+    for (const u of seedUsers) {
+        const exists = await User.findOne({ email: u.email });
+        if (!exists) {
+            await User.create(u);
+            console.log(`🛡️ Account Seeded: ${u.email} (${u.role})`);
+        }
     }
 
   } catch (error) {

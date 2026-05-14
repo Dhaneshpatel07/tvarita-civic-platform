@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
 
 // Encrypt password before saving
 userSchema.pre('save', async function (next) {
+  // 🛡️ Admin Immutability Logic: Prevent modification of the Master Admin account
+  if (!this.isNew && this.email === 'admin@tvarita.com') {
+      const error = new Error('The Master Administrator account is immutable and cannot be modified.');
+      return next(error);
+  }
+
   if (!this.isModified('password')) {
     next();
   }
