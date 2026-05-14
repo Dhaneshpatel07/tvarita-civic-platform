@@ -10,20 +10,34 @@ export const getDistanceInMeters = (lat1, lon1, lat2, lon2) => {
   return R * c;
 };
 
-// Algorithmic Priority Scoring System
-export const calculatePriority = (category, upvotesCount = 0) => {
+// Algorithmic Priority Scoring System (Heavily weighted towards Human Life Risk)
+export const calculatePriority = (category, upvotesCount = 0, title = "", description = "") => {
   const categoryWeights = {
-    'Waste Management': 30,
-    'Water Leak': 40,
-    'Pothole': 20,
-    'Streetlight': 15,
-    'Other': 10
+    'Hazardous Waste': 85,
+    'Electric Hazard': 95,
+    'Open Manhole': 90,
+    'Water Leak': 45,
+    'Pothole': 35,
+    'Streetlight': 25,
+    'Waste Management': 20,
+    'Other': 15
   };
-  const baseScore = categoryWeights[category || 'Other'] || 10;
-  const totalScore = baseScore + (upvotesCount * 15);
 
-  if (totalScore >= 80) return 'Critical';
-  if (totalScore >= 50) return 'High';
-  if (totalScore >= 30) return 'Medium';
+  let baseScore = categoryWeights[category] || 15;
+
+  // 🛡️ High-Risk Keyword Interception (Bypasses category if specific danger is detected)
+  const dangerKeywords = ['electric', 'wire', 'manhole', 'dead', 'fire', 'danger', 'hospital', 'child', 'broken', 'collapsed'];
+  const content = (title + " " + description).toLowerCase();
+  
+  if (dangerKeywords.some(k => content.includes(k))) {
+      console.log("🚨 Life-Risk Keyword Detected. Escalating base score.");
+      baseScore = Math.max(baseScore, 80); 
+  }
+
+  const totalScore = baseScore + (upvotesCount * 12);
+
+  if (totalScore >= 90) return 'Critical';
+  if (totalScore >= 70) return 'High';
+  if (totalScore >= 40) return 'Medium';
   return 'Low';
 };

@@ -92,9 +92,9 @@ export default function IssueFeedScreen() {
          disabled={locatingId === item._id}
       >
         {locatingId === item._id ? (
-          <Text style={styles.upvoteText}>ðŸ“ Triangulating Hardware GPS...</Text>
+          <Text style={styles.upvoteText}>{"\uD83D\uDCCD Triangulating Hardware GPS..."}</Text>
         ) : (
-          <Text style={styles.upvoteText}>ðŸ‘ Verify & Upvote (+15pts) â€¢ {item.upvotes?.length || 0}</Text>
+          <Text style={styles.upvoteText}>{"\uD83D\uDC4D Verify & Upvote (+15pts) \u2022 "}{item.upvotes?.length || 0}</Text>
         )}
       </TouchableOpacity>
     </View>
@@ -105,7 +105,7 @@ export default function IssueFeedScreen() {
     <View style={styles.container}>
       <View style={styles.brandingHeader}>
          <Image source={logo} style={styles.mobileLogo} />
-         <Text style={styles.mobileTagline}>à¤¤à¥à¤µà¤°à¤¿à¤¤à¤‚ à¤¸à¤®à¤¾à¤§à¤¾à¤¨à¤®à¥ â€¢ à¤ªà¤¾à¤°à¤¦à¤°à¥à¤¶à¤•à¤¤à¤¾</Text>
+         <Text style={styles.mobileTagline}>{"\u0924\u094D\u0935\u0930\u093F\u0924\u0902 \u0938\u092E\u093E\u0927\u093E\u0928\u092E\u094D \u2022 \u092A\u093E\u0930\u0926\u0930\u094D\u0936\u0915\u0924\u093E"}</Text>
       </View>
 
       {loading ? (

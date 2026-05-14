@@ -17,7 +17,7 @@ export default function ReportIssueScreen({ navigation }) {
   const [isLocating, setIsLocating] = useState(false);
   const [category, setCategory] = useState('Pothole');
 
-  const categories = ['Pothole', 'Streetlight', 'Water Leak', 'Waste Management', 'Other'];
+  const categories = ['Pothole', 'Streetlight', 'Water Leak', 'Waste Management', 'Open Manhole', 'Electric Hazard', 'Other'];
   
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,11 +61,6 @@ export default function ReportIssueScreen({ navigation }) {
   };
 
   const submitIssue = async (forceSubmit = false) => {
-    if (!title || !description) {
-      Alert.alert('Error', 'Please fill in all required text fields.');
-      return;
-    }
-
     if (!title || !description) {
       Alert.alert('Missing Info', 'Please provide both a title and a description for the report.');
       return;
@@ -203,17 +198,17 @@ export default function ReportIssueScreen({ navigation }) {
           {imageUri ? (
             <Image source={{ uri: `data:image/jpeg;base64,${imageUri}` }} style={styles.previewImage} />
           ) : (
-            <Text style={styles.actionText}>ðŸ“· Tap to Attach Photo</Text>
+            <Text style={styles.actionText}>{"\uD83D\uDCF7 Tap to Attach Photo"}</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.actionArea, { marginTop: 0 }]} onPress={fetchLocation}>
           {isLocating ? (
-             <Text style={styles.actionText}>ðŸ“ Finding location...</Text>
+             <Text style={styles.actionText}>{"\uD83D\uDCCD Finding location..."}</Text>
           ) : locationAddress ? (
-            <Text style={[styles.actionText, {color: '#4F46E5', fontWeight: 'bold'}]}>âœ… {locationAddress}</Text>
+            <Text style={[styles.actionText, {color: '#4F46E5', fontWeight: 'bold'}]}>{"\u2705 "}{locationAddress}</Text>
           ) : (
-            <Text style={styles.actionText}>ðŸ“ Tap to Attach Precise GPS Location</Text>
+            <Text style={styles.actionText}>{"\uD83D\uDCCD Tap to Attach Precise GPS Location"}</Text>
           )}
         </TouchableOpacity>
 

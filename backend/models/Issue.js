@@ -13,7 +13,7 @@ const issueSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ['Pothole', 'Streetlight', 'Water Leak', 'Waste Management', 'Other'],
+      enum: ['Pothole', 'Streetlight', 'Water Leak', 'Waste Management', 'Open Manhole', 'Electric Hazard', 'Other'],
     },
     location: {
       type: {

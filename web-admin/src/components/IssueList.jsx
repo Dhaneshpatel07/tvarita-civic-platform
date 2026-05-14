@@ -48,6 +48,8 @@ const IssueList = ({ issues = [], updateStatus }) => {
             <option value="Streetlight">Streetlight</option>
             <option value="Waste Management">Waste Management</option>
             <option value="Water Leak">Water Leak</option>
+            <option value="Open Manhole">Open Manhole</option>
+            <option value="Electric Hazard">Electric Hazard</option>
             <option value="Other">Other</option>
           </select>
           <select 

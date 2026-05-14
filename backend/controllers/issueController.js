@@ -10,8 +10,11 @@ export const createIssue = async (req, res) => {
   try {
     const { title, description, category, longitude, latitude, address, forceSubmit, imageBase64 } = req.body;
     
+    if (!imageBase64) {
+        return res.status(400).json({ message: 'A photo of the issue is mandatory for verification.' });
+    }
+
     let imageUrl = null;
-    if (imageBase64) {
         console.log("Processing base64 image upload...");
         
         // Ensure proper data URI prefix
@@ -25,7 +28,7 @@ export const createIssue = async (req, res) => {
            resource_type: 'image'
         });
         imageUrl = uploadRes.secure_url;
-    }
+
 
     const lat = parseFloat(latitude) || 0;
     const lon = parseFloat(longitude) || 0;
@@ -74,7 +77,7 @@ export const createIssue = async (req, res) => {
       title,
       description,
       category: category || 'Other',
-      priority: calculatePriority(category || 'Other', 0),
+      priority: calculatePriority(category || 'Other', 0, title, description),
       location: {
         type: 'Point',
         coordinates: [lon, lat],
@@ -277,7 +280,7 @@ export const upvoteIssue = async (req, res) => {
     issue.upvotes.push(req.user._id);
     
     // Auto-Priority Recalculation Engine
-    issue.priority = calculatePriority(issue.category, issue.upvotes.length);
+    issue.priority = calculatePriority(issue.category, issue.upvotes.length, issue.title, issue.description);
     const savedIssue = await issue.save();
     
     res.json({ 
