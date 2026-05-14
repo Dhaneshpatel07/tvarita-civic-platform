@@ -7,18 +7,23 @@ export const analyzeImageContent = async (imageUrl, title = "", description = ""
   const MODEL_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
 
   try {
-    // 1. Prepare payload (Convert base64 to Buffer if necessary)
-    let payload = imageUrl;
-    if (imageUrl.startsWith('data:')) {
+    // Prep
+    let payload;
+    if (imageUrl.startsWith('http')) {
+        const imageRes = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        payload = Buffer.from(imageRes.data);
+    } else if (imageUrl.startsWith('data:')) {
         payload = Buffer.from(imageUrl.split(',')[1], 'base64');
+    } else {
+        payload = Buffer.from(imageUrl, 'base64');
     }
 
-    // 2. Fetch visual caption from Hugging Face Deep Learning Model
+    // AI Call
     const response = await axios.post(MODEL_URL, 
       payload, 
       { 
         headers: { Authorization: `Bearer ${HF_API_KEY}` },
-        timeout: 10000 
+        timeout: 15000 
       }
     );
 
