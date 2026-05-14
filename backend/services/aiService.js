@@ -57,7 +57,7 @@ export const analyzeImageContent = async (imageUrl, title = "", description = ""
     
     // Fallback to basic keyword defense if AI service is down or rate-limited
     const content = (title + " " + description).toLowerCase();
-    const filterList = ['pizza', 'spam', 'test', 'fake', 'random', 'selfie', 'cat', 'dog'];
+    const filterList = ['pizza', 'spam', 'fake', 'random', 'selfie', 'cat', 'dog'];
     const isInvalid = filterList.some(k => content.includes(k));
 
     if (isInvalid) {

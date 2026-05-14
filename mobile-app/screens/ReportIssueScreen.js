@@ -76,6 +76,7 @@ export default function ReportIssueScreen({ navigation }) {
       return;
     }
     
+    console.log("📤 Submitting Issue to:", `${api.defaults.baseURL}/issues`);
     setIsSubmitting(true);
     try {
       const payload = {
@@ -85,9 +86,10 @@ export default function ReportIssueScreen({ navigation }) {
         longitude: coordinates.longitude,
         latitude: coordinates.latitude,
         address: locationAddress || '',
-        forceSubmit: forceSubmit,
+        forceSubmit: forceSubmit === true,
         imageBase64: imageUri
       };
+      console.log("📦 Payload prepared. Image size (chars):", imageUri.length);
 
       const fetchResponse = await fetch(`${api.defaults.baseURL}/issues`, {
         method: 'POST',
@@ -214,7 +216,7 @@ export default function ReportIssueScreen({ navigation }) {
 
         <TouchableOpacity 
           style={[styles.submitButton, isSubmitting && { backgroundColor: '#9CA3AF' }]} 
-          onPress={submitIssue}
+          onPress={() => submitIssue(false)}
           disabled={isSubmitting}
         >
           {isSubmitting ? (
