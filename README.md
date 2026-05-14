@@ -23,6 +23,10 @@ To ensure data integrity, the system utilizes the **Salesforce BLIP Deep Learnin
 ### ⚖️ Life-Risk Priority Algorithm
 Issues are not treated on a "first-come, first-served" basis. Our algorithm automatically escalates life-threatening issues (like open manholes or live electric wires) to **"Critical"** status, ensuring authorities fix the most dangerous problems first.
 
+### 🛡️ Demo-Ready Security
+- **Immutable Admin**: The master administrator account (`admin@tvarita.com`) is armor-plated at the database level to prevent accidental deletion or unauthorized modification during live demonstrations.
+- **Automated Seeding**: The system automatically generates a standard set of demonstration users upon startup, ensuring the platform is always ready for a flawless walkthrough.
+
 ---
 
 ## 🏗️ System Architecture
