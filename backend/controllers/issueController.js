@@ -17,9 +17,9 @@ export const createIssue = async (req, res) => {
     let imageUrl = null;
         console.log("Processing base64 image upload...");
         
-        // Ensure proper data URI prefix
+        // Support for both Base64 and direct Image URLs for testing
         let base64Data = imageBase64;
-        if (!imageBase64.startsWith('data:')) {
+        if (!imageBase64.startsWith('data:') && !imageBase64.startsWith('http')) {
             base64Data = `data:image/jpeg;base64,${imageBase64}`;
         }
         
