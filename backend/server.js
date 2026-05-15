@@ -47,6 +47,7 @@ const connectDB = async () => {
     
     const seedUsers = [
         { name: 'Tvarita Administrator', email: 'admin@tvarita.com', password: 'dhanesh', role: 'admin' },
+        { name: 'System Admin', email: 'admin@gmail.com', password: 'admin123', role: 'admin' },
         { name: 'Dhanesh', email: 'dhanesh@gmail.com', password: 'password123', role: 'citizen' },
         { name: 'Hasini', email: 'hasini@gmail.com', password: 'password123', role: 'citizen' },
         { name: 'Siril', email: 'siril@gmail.com', password: 'password123', role: 'citizen' }

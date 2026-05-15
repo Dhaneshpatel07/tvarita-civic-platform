@@ -97,8 +97,8 @@ npx expo start
 ---
 
 ## 👤 Default Admin Access
-- **Email**: `admin@tvarita.com`
-- **Password**: `dhanesh`
+- **Standard Admin**: `admin@gmail.com` / `admin123`
+- **Master Admin**: `admin@tvarita.com` / `dhanesh`
 
 ---
 

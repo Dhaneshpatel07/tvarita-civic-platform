@@ -71,7 +71,8 @@ const Login = () => {
          </form>
          
          <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '13px', color: '#64748b' }}>
-            <p>Master Credentials: admin@tvarita.com / dhanesh</p>
+            <p><strong>Default Admin:</strong> admin@gmail.com / admin123</p>
+            <p style={{ marginTop: '4px', opacity: 0.7 }}>Master Admin: admin@tvarita.com / dhanesh</p>
          </div>
       </div>
     </div>
